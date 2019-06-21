@@ -1,35 +1,36 @@
 $(document).ready(function () {
-var questionSet;
-var right;
-var wrong;
-var skip;
-var nowIndex;
-var timeDone;
+	console.log('working')
+	let questionSet;
+	let right;
+	let wrong;
+	let skip;
+	let nowIndex;
+	let timeDone;
 
 
-    var timer = {
+	var timer = {
 		time: 30,
 
 		reset: function () {
-        	timer.time = 30;
-    	},
-   		start: function(){
-   			$('#time').html("Time Remaining: " + timer.time).css("color", "1be51e");;
-        	counter = setInterval(timer.count, 1000);
-    	},
-    	stop: function(){
-        	clearInterval(counter);
-    	},
-    	count: function(){
-   	        timer.time--;
-	        $('#time').html("Time Remaining: " + timer.time);
+			timer.time = 30;
+		},
+		start: function () {
+			$('#time').html("Time Remaining: " + timer.time).css("color", "1be51e");;
+			counter = setInterval(timer.count, 1000);
+		},
+		stop: function () {
+			clearInterval(counter);
+		},
+		count: function () {
+			timer.time--;
+			$('#time').html("Time Remaining: " + timer.time);
 
-    	},
+		},
 	}
-    
-    function questionMaker() {
-        questionSet = [{
-            question: "Cassiopeia is half woman and half what animal?",
+
+	function questionMaker() {
+		questionSet = [{
+			question: "Cassiopeia is half woman and half what animal?",
 			answers: ["Snake", "Bird", "Horse", "Spider"],
 			rightA: 'assets/images/right.png',
 			wrongA: 'assets/images/wrong.png',
@@ -47,7 +48,7 @@ var timeDone;
 			wrongA: 'assets/images/wrong.png',
 			correctanswer: 3
 		}, {
-			question: "Caitlyn is the Sheriff of what town",
+			question: "Caitlyn is the Sheriff of what town?",
 			answers: ["Demacia", "Piltover", "Noxus", "Freljord"],
 			rightA: 'assets/images/right.png',
 			wrongA: 'assets/images/wrong.png',
@@ -88,104 +89,111 @@ var timeDone;
 			rightA: 'assets/images/right.png',
 			wrongA: 'assets/images/wrong.png',
 			correctanswer: 3
-        }]
-        
-        right = 0;
-        wrong = 0;
-        skip = 0;
-        nowIndex = -1;
+		}]
 
-        $('#question').html("<button class='but' id='start'>Start</button>")
+		right = 0;
+		wrong = 0;
+		skip = 0;
+		nowIndex = -1;
+
+		$('#question').html("<button class='but' id='start'>Start</button>")
 		$('#but0, #but1, #but2, #but3').hide().off('click');
 
-		$('#start').on("click", function() {
+		$('#start').on("click", function () {
 			advance();
 		});
-    }
+	}
 
-    function startQuestions() {
-        timer.start();
-        $('#question').html(questionSet[nowIndex].question);
-        $('#but0').show().html(questionSet[nowIndex].answers[0]);
-        $('#but1').show().html(questionSet[nowIndex].answers[1]);
-        $('#but2').show().html(questionSet[nowIndex].answers[2]);
-        $('#but3').show().html(questionSet[nowIndex].answers[3]);
-        $('#responsePic').hide().off('click');
+	function startQuestions() {
+		timer.start();
+		$('#question').html(questionSet[nowIndex].question);
+		$('#but0').show().html(questionSet[nowIndex].answers[0]);
+		$('#but1').show().html(questionSet[nowIndex].answers[1]);
+		$('#but2').show().html(questionSet[nowIndex].answers[2]);
+		$('#but3').show().html(questionSet[nowIndex].answers[3]);
+		$('#responsePic').hide().off('click');
 
-        clickButton();
-    }
+		clickButton();
+	}
+		
+	function clickButton() {
+	console.log('click button ran');
+		$('.but').on("click", function () {
+			console.log('click event');
+			let butPress = parseInt($(this).attr('value'));
+			console.log($(this).html('value'));
+			console.log(` ${butPress} === ${questionSet[nowIndex].correctanswer}`)
+			if (butPress === questionSet[nowIndex].correctanswer) {
+				console.log('click');
+				
+				rightAns();
+			}
+			else {
+				wrongAns();
+			}
+		});
+	}
 
-    function clickButton() {
-        $('.but').on("click", function() {
-            var butPress = parseInt($(this).attr('value'));
-            if (butPress === questionSet[nowIndex].correctanswer) {
-                rightAns();
-            }
-            else {
-                wrongAns();
-            }
-        });
-    }
+	function rightAns() {
+		console.log('hello');
+		clearTimeout(timeDone);
+		right++;
+		timer.stop();
+		timer.reset();
+		$('#time').empty();
+		$('#question').html("<h3>Thumbs Up</h3>");
+		$('#but0, #but1, #but2, #but3').hide().off('click');
+		$('#responsePic').show().html("<img src=" + questionSet[nowIndex].rightA + '>');
+		timeDone = setTimeout(advance, 4 * 1000);
 
-    function rightAns() {
-        clearTimeout(timeDone);
-        right++;
-        timer.stop();
-        timer.reset();
-        $('#time').empty();
-        $('#quesiton').html("<h3>Thumbs Up</h3>");
-        $('#but0, #but1, #but2, #but3').hide().off('click');
-        $('#responsePic').show().html("<img src=" + questionSet[nowIndex].rightA);
-        timeDone = setTimeout(advance, 4 * 1000);
+	}
 
-    }
+	function wrongAns() {
+		clearTimeout(timeDone);
+		wrong++;
+		timer.stop();
+		timer.reset();
+		$('#time').empty();
+		$('#question').html("<h3>Y I K E S</h3>");
+		$('#but0, #but1, #but2, #but3').hide().off('click');
+		$('#responsePic').show().html("Should have selected: " + questionSet[nowIndex].answers[questionSet[nowIndex].correctanswer] + "<img src=" + questionSet[nowIndex].wrongA + '>');
+		timeDone = setTimeout(advance, 4 * 1000);
 
-    function wrongAns() {
-        clearTimeout(timeDone);
-        wrong++;
-        timer.stop();
-        timer.reset();
-        $('#time').empty();
-        $('#quesiton').html("<h3>You're Being Laughed At</h3>");
-        $('#but0, #but1, #but2, #but3').hide().off('click');
-        $('#responsePic').show().html("Should have selected: " + questionSet[nowIndex].answers[questionSet[nowIndex].correctanswer] + "<img src=" + questionSet[nowIndex].rightA);
-        timeDone = setTimeout(advance, 4 * 1000);
+	}
 
-    }
+	function timesDone() {
+		clearTimeout(timeDone);
+		skip++;
+		timer.stop();
+		timer.reset();
+		$('time').empty();
+		$('#question').html("<h3>You didn't choose anything?!</h3>")
+		$('#but0, #but1, #but2, #but3').hide().off('click');
+		$('#responsePic').show().html("Should have selected: " + questionSet[nowIndex].answers[questionSet[nowIndex].correctanswer] + "<img src=" + questionSet[nowIndex].wrongA + '>');
+		timeDone = setTimeout(advance, 4 * 1000);
+	}
 
-    function timesDone() {
-        clearTimeout(timeDone);
-        skip++;
-        timer.stop();
-        timer.reset();
-        $('time').empty();
-        $('#question').html("<h3>You didn't choose anything?!</h3>")
-        $('#but0, #but1, #but2, #but3').hide().off('click');
-        $('#responsePic').show().html("Should have selected: " + questionSet[nowIndex].answers[questionSet[nowIndex].correctanswer] + "<img src=" + questionSet[nowIndex].rightA);
-        timeDone = setTimeout(advance, 4 * 1000);   
-    }
-
-    function endGame() {
-        $('#time').html("<h2>Good job!</h2>");
-        $('#question').html("Your results <br>Right: " + right + "/10");
-        $('#gifHolder').html("<button class='btn' id='playagain'>Play again?</button>")
-		$('#playagain').on("click", function() {
+	function endGame() {
+		$('#time').html("<h2>Good job!</h2>");
+		$('#question').html("Your results <br>Right: " + right + "/10");
+		$('#responsePic').html("<button class='but' id='playagain'>Play again?</button>")
+		$('#playagain').on("click", function () {
 			questionMaker();
 			advance();
 		});
-    }
+	}
 
-    function advance() {
-        nowIndex++;
+	function advance() {
+		nowIndex++;
 
-        if(nowIndex < questionSet.length) {
-            startQuestions();
-            timeDone = setTimeout(timesDone, 30 * 1000);
-        } else {
-            endGame();
-        }
-    }
+		if (nowIndex < questionSet.length) {
+			startQuestions();
+			timeDone = setTimeout(timesDone, 30 * 1000);
+		} else {
+			endGame();
+		}
+	}
 
-    questionMaker();
-    
+	questionMaker();
+
 });
