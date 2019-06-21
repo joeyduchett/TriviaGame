@@ -1,0 +1,47 @@
+body {
+    background-color: #252c41;
+    font-family: 'Muli', 'sans-serif';
+}
+
+.gameArea {
+    background-color: #dae9f4;
+    text-align: center;
+    padding: 25px;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 5px;
+    border-color:black;
+}
+
+.title {
+    background-image: url("league.png");
+}
+.titleText {
+    font-weight: bolder;
+}
+
+.question {
+    font-size: 32px;
+}
+
+.but {
+    background-color: #252c41;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 3px;
+    border-color:lightblue;
+    height: 50px;
+    width: 350px;
+    margin: 10px;
+    color: whitesmoke;
+    transition: 200ms;
+    font-weight: bolder;
+}
+
+.but:hover {
+    background-color: whitesmoke;
+    color: #252c41;
+    width: 400px;
+    height: 50px;
+    border-radius: 100px;
+}
