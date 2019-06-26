@@ -120,7 +120,8 @@ $(document).ready(function () {
 	console.log('click button ran');
 		$('.but').on("click", function () {
 			console.log('click event');
-			let butPress = parseInt($(this).attr('value'));
+			console.log($(this).attr('data-value'));
+			let butPress = parseInt($(this).attr('data-value'));
 			console.log($(this).html('value'));
 			console.log(` ${butPress} === ${questionSet[nowIndex].correctanswer}`)
 			if (butPress === questionSet[nowIndex].correctanswer) {
@@ -141,7 +142,7 @@ $(document).ready(function () {
 		timer.stop();
 		timer.reset();
 		$('#time').empty();
-		$('#question').html("<h3>Thumbs Up</h3>");
+		$('#question').html("<h3>Correct!</h3>");
 		$('#but0, #but1, #but2, #but3').hide().off('click');
 		$('#responsePic').show().html("<img src=" + questionSet[nowIndex].rightA + '>');
 		timeDone = setTimeout(advance, 4 * 1000);
@@ -156,7 +157,7 @@ $(document).ready(function () {
 		$('#time').empty();
 		$('#question').html("<h3>Y I K E S</h3>");
 		$('#but0, #but1, #but2, #but3').hide().off('click');
-		$('#responsePic').show().html("Should have selected: " + questionSet[nowIndex].answers[questionSet[nowIndex].correctanswer] + "<img src=" + questionSet[nowIndex].wrongA + '>');
+		$('#responsePic').show().html("<h4>Should have selected:</h4> " + questionSet[nowIndex].answers[questionSet[nowIndex].correctanswer] + "<br> <img src=" + questionSet[nowIndex].wrongA + '>');
 		timeDone = setTimeout(advance, 4 * 1000);
 
 	}
@@ -169,7 +170,7 @@ $(document).ready(function () {
 		$('time').empty();
 		$('#question').html("<h3>You didn't choose anything?!</h3>")
 		$('#but0, #but1, #but2, #but3').hide().off('click');
-		$('#responsePic').show().html("Should have selected: " + questionSet[nowIndex].answers[questionSet[nowIndex].correctanswer] + "<img src=" + questionSet[nowIndex].wrongA + '>');
+		$('#responsePic').show().html("<h4>Should have selected:</h4> " + questionSet[nowIndex].answers[questionSet[nowIndex].correctanswer] + "<br> <img src=" + questionSet[nowIndex].wrongA + '>');
 		timeDone = setTimeout(advance, 4 * 1000);
 	}
 
